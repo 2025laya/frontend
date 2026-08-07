@@ -39,7 +39,20 @@ input{
     width:160px;
     transition: 0.8s;
 }
-
+.login-button1{
+    background-color: #E9D5FF;
+    margin-top: 11px;
+    border:none;
+    border-radius: 25px;
+    height:50px;
+    padding:20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    width:160px;
+    transition: 0.8s;
+}
 .login{
   display: flex;
   justify-content: center;

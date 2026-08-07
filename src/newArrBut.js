@@ -44,10 +44,10 @@ export default function Arr({state,setpage,setstate,setSelectedBook}){
           </div>
           <div style={{display:"flex" , flexWrap:"wrap" , justifyContent:"center" , columnGap:"5%" , rowGap:"50px"}}>
               {[...books].sort((a,b)=>Number(b.published)-Number(a.published)).slice(0,30).map((book) => (
-             <div class="card6" style={{backgroundColor:state?"#d9d9d9":"#27272a",transition:"0.3s"}}>
-  <div class="image_container6">
+             <div class="card6" style={{backgroundColor:state?"#d9d9d9":"#27272a",transition:"0.3s",height:"100%"}}>
+  <div class="image_container6" >
     <div key={book._id}>
-          <img src={book.cover} alt={book.title} />
+          <img style={{width:"100%",height:"100%"}} src={book.cover} alt={book.title} />
         </div>
   </div>
   <div class="title6" style={{color:state?"#27272a":"#d9d9d9",transition:"0.3s"}}>

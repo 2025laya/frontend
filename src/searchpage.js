@@ -86,7 +86,7 @@ export default function Searchpage({setpage,state,books,
           <div class="card6" style={{backgroundColor:state?"#d9d9d9":"#27272a",transition:"0.3s"}}>
   <div class="image_container6">
     <div key={book._id}>
-          <img src={book.cover} alt={book.title} />
+          <img style={{width:"100%",height:"100%"}} src={book.cover} alt={book.title} />
         </div>
   </div>
   <div class="title6" style={{color:state?"#27272a":"#d9d9d9",transition:"0.3s"}}>

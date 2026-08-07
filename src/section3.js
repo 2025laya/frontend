@@ -152,7 +152,7 @@ export default function Sec3({ state, setpage, setSelectedBook }) {
             <Swiper
               dir={currentDir}
               key={currentDir}
-              // style={{paddingTop:"80px",paddingBottom:"80px"}}
+              className="paddings"
               modules={[Pagination]}
               pagination={{ clickable: true }}
               spaceBetween={2}
@@ -171,14 +171,14 @@ export default function Sec3({ state, setpage, setSelectedBook }) {
                 },
               }}
             >
-              {books.slice(0, 8).map((book) => (
+              {books.slice(0, 12).map((book) => (
                 <SwiperSlide key={book._id}>
                   <div
                     className="card"
                     style={{
                       fontFamily: font,
-                      // marginTop: "50px",
-                      // marginBottom: "50px",
+                      marginTop: "50px",
+                      marginBottom: "50px",
                     }}
                   >
                     <div className="card__shine"></div>
@@ -186,7 +186,7 @@ export default function Sec3({ state, setpage, setSelectedBook }) {
                     <div className="card__glow"></div>
                     <div className="card__content">
                       <div className="card__image">
-                        <img src={book.cover} alt={book.title} />
+                        <img style={{width:"100%",height:"100%"}} src={book.cover} alt={book.title} />
                       </div>
 
                       <div className="card__text">
@@ -202,7 +202,7 @@ export default function Sec3({ state, setpage, setSelectedBook }) {
                         </div> */}
 
                         <div
-                          style={{ display: "flex", flexDirection: "column" }}
+                          style={{ display: "flex"}}
                         >
                           <button
                             className="card__button"
@@ -216,6 +216,7 @@ export default function Sec3({ state, setpage, setSelectedBook }) {
                               justifyContent: "center",
                               marginTop: "20px",
                               gap: "5px",
+                             
                             }}
                           >
                             {love[book._id] ? (
@@ -224,7 +225,7 @@ export default function Sec3({ state, setpage, setSelectedBook }) {
                                 className="icon"
                                 onClick={() => islove(book._id)}
                                 role="button"
-                                style={{ width: "17%" }}
+                                style={{ width: "25%" }}
                                 alt="love"
                               />
                             ) : (
@@ -233,7 +234,7 @@ export default function Sec3({ state, setpage, setSelectedBook }) {
                                 role="button"
                                 className="icon"
                                 onClick={() => islove(book._id)}
-                                style={{ width: "17%" }}
+                                style={{ width: "25%" }}
                                 alt="love"
                               />
                             )}
@@ -243,7 +244,7 @@ export default function Sec3({ state, setpage, setSelectedBook }) {
                                 className="icon"
                                 onClick={() => issave(book._id)}
                                 role="button"
-                                style={{ width: "15%" }}
+                                style={{ width: "25%" }}
                                 alt="save"
                               />
                             ) : (
@@ -252,23 +253,29 @@ export default function Sec3({ state, setpage, setSelectedBook }) {
                                 role="button"
                                 className="icon"
                                 onClick={() => issave(book._id)}
-                                style={{ width: "15%" }}
+                                style={{ width: "25%" }}
                                 alt="save"
                               />
                             )}
                           </div>
                         </div>
-=======
 
-                        <button 
+
+                        {/* <button 
                           className="card__button"
                           onClick={() => goToBook(book)}
                         >
                           {t("readMore")}
                         
                         </button>
-                         {save[book._id]? (<img src={blackimg} role='button' className="icon" onClick={()=>issave(book._id)}   style={{width:"30%"}} alt="love"/> ):(<img src={colorimg} className="icon" onClick={()=>issave(book._id)}    role="button" style={{width:"30%"}}  alt="love"/>)
-                          }
+                         {save[book._id]? (
+                          <img src={blackimg}
+                           role='button'
+                           className="icon"
+                           onClick={()=>issave(book._id)}   
+                           style={{width:"30%"}} alt="love"/> ):(<img src={colorimg} className="icon" onClick={()=>issave(book._id)}    
+                           role="button" style={{width:"30%"}}  alt="love"/>)
+                          } */}
                          
                         
                       </div>

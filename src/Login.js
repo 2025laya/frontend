@@ -1,4 +1,5 @@
 import user3333 from "./images/user.png";
+import undrow from './images/text-field.png';
 import user1 from "./images/user1.png";
 import user2 from "./images/user2.png";
 import user3 from "./images/user3.png";
@@ -35,7 +36,6 @@ import { useState } from "react";
 import Swal from 'sweetalert2';
 import { useTranslation } from "react-i18next";
 import i18n from "./i18n";
-import Text from "./Text.js";
 const avatars = [
   user1,user2,user3,user4,user5,
   user6,user7,user8,user9,user10,
@@ -53,15 +53,7 @@ const font = i18n.language === "ar" ?
    i18n.language==="zh" || i18n.language==="ja" ? "zheng":
     i18n.language==="ko"?"Dongle" :
      "playpen, sans-serif";
-const isSignup=props.mode==="signup";
-const [form,setform]=useState(
-    {
-     [props.field1]:"",
-     [props.field2]:"",
-     [props.field3]:"",
-     [props.field4]:""
-    }
-);
+const [form,setform]=useState({[props.field1]:"",[props.field2]:"",[props.field3]:""});
 const user = JSON.parse(localStorage.getItem("user"));
 function emailChange(event){
 setform({...form,[props.field1]:event.target.value});
@@ -73,7 +65,7 @@ function firstNameChange(event){
     setform({...form,[props.field3]:event.target.value})
 }
 function lastNameChange(event){
-    setform({...form,[props.field4]:event.target.value})
+    setform({...form,[props.field3]:event.target.value})
 }
 async function submit(event){
 event.preventDefault();
@@ -81,19 +73,17 @@ console.log(form[props.field1], form[props.field2]);
 
 const data={  [props.field1]: form[props.field1],
               [props.field2]: form[props.field2],};
-              if(isSignup){
+              if(props.namebutton==='Sign up'){
                 data[props.field3]=form[props.field3];
-                data[props.field4]=form[props.field4];
-                console.log(data);
+                data[props.field4]=form[props.field4]
             }
 
-const end= isSignup ? '/api/register' : '/api/login';
+const end= props.namebutton==='Sign up'? '/api/register' : '/api/login';
        
         try {
             
             const response = await fetch(`http://localhost:3000${end}`, { 
                 method: 'POST', 
-                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json', 
                 },
@@ -102,41 +92,28 @@ const end= isSignup ? '/api/register' : '/api/login';
 
             const result = await response.json();
 
-             if (!response.ok) {
-    Swal.fire({
-    title: "Success!",
-    text: "The operation was completed successfully",
-    icon: "success",   // ✅ هذا الصحيح
-    confirmButtonText: "Ok",
-    confirmButtonColor: "#3085d6",
-    timer: 2000
-}).then(() => {
-    props.setpage("home");
-});
-    return;
-}
-
-// جلب بيانات المستخدم
-const meResponse = await fetch("http://localhost:3000/api/me", {
-    method: "GET",
-    credentials: "include"
-});
-
-if (meResponse.ok) {
-    const userData = await meResponse.json();
-    localStorage.setItem("user", JSON.stringify(userData));
-}
-
-Swal.fire({
-    title: "Success!",
-    text: "The operation was completed successfully",
-    icon: "success",
-    confirmButtonText: "Ok",
-    confirmButtonColor: "#3085d6",
-    timer: 2000
-}).then(() => {
-    props.setpage("home");
-});
+               if (!response.ok) {
+                Swal.fire({
+                 title: "Incorrect password or email",        
+                 text: result.msg,   
+                 icon: 'error',        
+                 confirmButtonText:'Ok',
+                 confirmButtonColor: '#d33', 
+                 timer: 3000  
+                }) 
+                return;
+            }
+            
+                Swal.fire({
+                 title: "Success!",        
+                 text:   "The operation was completed successfully",   
+                 icon: 'Ok',        
+                 confirmButtonText:'Ok',
+                 confirmButtonColor: '#3085d6', 
+                 timer: 2000  
+                }) 
+                .then(()=>{
+               props.setpage('home');})
             
 
             console.log("SUCCESS:", result);
@@ -153,6 +130,7 @@ Swal.fire({
             
              {props.children}
              
+                {/* <img src={user3333} alt="textfield"  style={{width:"60%" ,marginBottom:"20px"}}/>  */}
                 <img
   src={
     user?.avatar !== null && user?.avatar !== undefined
@@ -165,7 +143,7 @@ Swal.fire({
 />
                <form onSubmit={submit} >
                   
-                  {isSignup && ( <div className='forminput'> 
+                  {props.namebutton==="Sign up" && ( <div className='forminput'> 
                     <input value={form[props.field3]} style={{fontFamily:font}}  type="text"  name={props.field3} placeholder={`${t("data1")} ${props.field3}`} onChange={firstNameChange} required /> 
                     <input value={form[props.field4]} style={{fontFamily:font}}  type="text"  name={props.field4} placeholder={`${t("data1")} ${props.field4}`} onChange={lastNameChange} required /> 
                     </div>)}
@@ -181,7 +159,7 @@ Swal.fire({
                   <button type="submit" className="login-button" style={{fontFamily:font}}>
                     {props.namebutton}
                   </button>
-                  <button className="login-button" style={{fontFamily:font , width:"400px" , height:"50px"}} onClick={()=>props.setpage("profile")}>
+                  <button className="login-button1" style={{fontFamily:font}} onClick={()=>props.setpage("profile")}>
                    {t("selectYourProfile")}
                   </button>
                </div>

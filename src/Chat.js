@@ -15,29 +15,61 @@ export default function Chat({ setpage, state }) {
     i18n.language==="ko"?"Dongle" :
      "playpen, sans-serif";
   const [message, setmessage] = useState("");
-  const [arraymessage, setarrymessage] = useState([]);
-  const [username] = useState(`User_${Math.floor(Math.random() * 1000)}`);
-  const icons = [
-    faBook,
-    faComment,
-    faMessage,
-    faPaperPlane,
-    faBookOpen,
-    faBookmark,
-  ];
-  const repeatIcons = Array(47).fill(icons).flat();
-  const messageEndRef = useRef(null);
-  const messageContainerRef = useRef(null);
+const [arraymessage, setarrymessage] = useState([]);
 
-  useEffect(() => {
-    socket.on("receiveMessage", (data) => {
-      setarrymessage((prev) => [...prev, data]);
+const user = JSON.parse(localStorage.getItem("user"));
+
+const username = user?.name || "Guest";
+  // ? `${user.firstName || ""} ${user.lastName || ""}.trim()`
+  // : "Unknown User";
+
+const token = localStorage.getItem("token");
+
+const icons = [
+  faBook,
+  faComment,
+  faMessage,
+  faPaperPlane,
+  faBookOpen,
+  faBookmark,
+];
+
+const repeatIcons = Array(47).fill(icons).flat();
+
+const messageEndRef = useRef(null);
+const messageContainerRef = useRef(null);
+
+useEffect(() => {
+
+  fetch("http://localhost:3000/api/messages", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("MESSAGES:", data);
+
+      if (Array.isArray(data.messages)) {
+        setarrymessage(data.messages);
+      }
+    })
+    .catch((err) => {
+      console.log("Error fetching messages:", err);
     });
 
-    return () => {
-      socket.off("receiveMessage");
-    };
-  }, []);
+  socket.on("receiveMessage", (data) => {
+    setarrymessage((prev) => [
+      ...(Array.isArray(prev) ? prev : []),
+      data,
+    ]);
+  });
+
+  return () => {
+    socket.off("receiveMessage");
+  };
+
+}, []);
 useEffect(() => {
   const container = messageContainerRef.current;
 
@@ -51,7 +83,7 @@ useEffect(() => {
 
     if (message.trim() !== "") {
       const messagedata = {
-        _id: Date.now() + Math.random(), 
+        _id: Date.now() + Math.random(), // ✅ unique id لكل رسالة
         text: message,
         sender: username,
       };
@@ -220,7 +252,7 @@ useEffect(() => {
             />
           ))}
         </div>
-        {arraymessage.map((msg) => (
+       { Array.isArray(arraymessage) && arraymessage.map((msg,index)=>(
           <div
             key={msg._id}
             style={{
